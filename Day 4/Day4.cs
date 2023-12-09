@@ -35,5 +35,29 @@ namespace AoC2023 {
             Console.WriteLine(sum);
         }
 
+        // I needed help in solving part 2. Resources I used:
+        // https://github.com/danielhuang/aoc-2023/blob/master/src/bin/4.rs
+        // https://www.youtube.com/watch?v=-bJa4VEeQ2M
+        public static void Solve2() {
+            string[] lines = File.ReadAllLines("day4.txt");
+            int[] ints = new int[lines.Length];
+            for (int i = 0; i < ints.Length; i++) {
+                ints[i]++;
+            }
+
+            for (int i = 0; i < lines.Length; i++) {
+                string line = lines[i];
+                string nums = line.Substring(line.IndexOf(':') + 1);
+                int[] winning = Array.ConvertAll(nums.Split('|')[0].Trim().Replace("  ", " ").Split(' '), int.Parse);
+                int[] picked = Array.ConvertAll(nums.Split("|")[1].Trim().Replace("  ", " ").Split(' '), int.Parse);
+
+                int wins = winning.Intersect(picked).ToArray().Length;
+                for (int j = i+1; j <= i + wins; j++) {
+                    ints[j] += ints[i];
+                }
+                //Environment.Exit(0);
+            }
+            Console.WriteLine(ints.Sum());
+        }
     }
 }
